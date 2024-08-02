@@ -1,13 +1,29 @@
-import {Link} from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
-function MovieCard({title}) {
-  
+function MovieList() {
+  const [movies, setMovies] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:4000/movies")
+      .then((response) => response.json())
+      .then((data) => setMovies(data))
+      .catch((error) => console.error(error));
+  }, []);
+
   return (
-    <article>
-        <h2>{title}</h2>
-        {/* What should go here? */}
-    </article>
+    <div>
+      <h1>Movies</h1>
+      <ul>
+        {movies.map((movie) => (
+          <li key={movie.id}>
+            <Link to={`/movie/${movie.id}`}>{movie.title}</Link>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
-};
+}
 
-export default MovieCard;
+export default MovieList;
+ 
